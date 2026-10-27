@@ -144,7 +144,7 @@
       pageContent.classList.remove("is-loading");
       updatePageHeading(label);
       document.title = `${label} · Qreative LMS`;
-      document.getElementById("sidebar").classList.remove("open");
+      setSidebarOpen(false);
     }
 
     function applyPageDocument(doc, pageUrl) {
@@ -171,7 +171,7 @@
       document.title = doc.title;
       const parsedUrl = new URL(pageUrl, location.href);
       setActiveNavigation(parsedUrl.pathname);
-      document.getElementById("sidebar").classList.remove("open");
+      setSidebarOpen(false);
       document.getElementById("courseSearch").value = "";
       return true;
     }
@@ -263,6 +263,27 @@
     window.addEventListener("popstate", () => navigateTo(location.href, { push: false }));
     document.getElementById("courseSearch").addEventListener("input", event => renderCourses(event.target.value));
     document.getElementById("notificationButton").addEventListener("click", () => toast("Tugas Speaking practice sudah dinilai — skor 92/100."));
-    document.getElementById("mobileMenu").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("open"));
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenu = document.getElementById("mobileMenu");
+    function setSidebarOpen(open) {
+      sidebar.classList.toggle("open", open);
+      mobileMenu.setAttribute("aria-expanded", String(open));
+    }
+    mobileMenu.setAttribute("aria-controls", "sidebar");
+    mobileMenu.setAttribute("aria-expanded", "false");
+    mobileMenu.addEventListener("click", event => {
+      event.stopPropagation();
+      setSidebarOpen(!sidebar.classList.contains("open"));
+    });
+    // Tutup laci menu saat area gelap di luar sidebar disentuh, tombol Esc ditekan, atau layar melebar.
+    document.addEventListener("click", event => {
+      if (sidebar.classList.contains("open") && !sidebar.contains(event.target)) setSidebarOpen(false);
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && sidebar.classList.contains("open")) setSidebarOpen(false);
+    });
+    window.matchMedia("(min-width: 1025px)").addEventListener("change", event => {
+      if (event.matches) setSidebarOpen(false);
+    });
     render();
     scrollMessagesToLatest();
