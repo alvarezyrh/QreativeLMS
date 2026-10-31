@@ -6,3 +6,13 @@ RewriteRule ^(?:app|database|storage|views)(?:/|$) - [F,L]
 <FilesMatch "\.(sqlite|sqlite3|db|sql)$">
     Require all denied
 </FilesMatch>
+
+<FilesMatch "^\.user\.ini$">
+    Require all denied
+</FilesMatch>
+
+# Batas upload modul untuk Apache dengan mod_php (PHP-FPM memakai .user.ini).
+<IfModule php_module>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 24M
+</IfModule>

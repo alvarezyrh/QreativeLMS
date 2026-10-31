@@ -23,13 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = is_string($emailInput) ? trim($emailInput) : '';
         $password = is_string($passwordInput) ? $passwordInput : '';
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '' || strlen($password) > 4096) {
-            $error = 'Email atau kata sandi tidak valid.';
+        // Bisa masuk memakai email atau username.
+        $isEmail = str_contains($email, '@');
+        $username = strtolower($email);
+        if (
+            ($isEmail ? !filter_var($email, FILTER_VALIDATE_EMAIL) : preg_match('/\A[a-z0-9][a-z0-9._]{2,29}\z/', $username) !== 1)
+            || $password === ''
+            || strlen($password) > 4096
+        ) {
+            $error = 'Email/username atau kata sandi tidak valid.';
         } else {
             $statement = database()->prepare(
-                'SELECT id, password_hash FROM users WHERE email = :email AND status = :status LIMIT 1'
+                $isEmail
+                    ? 'SELECT id, password_hash FROM users WHERE email = :login AND status = :status LIMIT 1'
+                    : 'SELECT id, password_hash FROM users WHERE username = :login AND status = :status LIMIT 1'
             );
-            $statement->execute(['email' => $email, 'status' => 'active']);
+            $statement->execute(['login' => $isEmail ? $email : $username, 'status' => 'active']);
             $account = $statement->fetch();
 
             if ($account !== false && password_verify($password, $account['password_hash'])) {
@@ -39,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 redirect('/');
             }
 
-            $error = 'Email atau kata sandi tidak cocok.';
+            $error = 'Email/username atau kata sandi tidak cocok.';
         }
     }
 }

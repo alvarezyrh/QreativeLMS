@@ -16,6 +16,7 @@ if ($schema === false) {
 
 $connection = database();
 $connection->exec($schema);
+upgrade_schema($connection);
 
 $courseColumns = array_column($connection->query('PRAGMA table_info(courses)')->fetchAll(), 'name');
 if (!in_array('price_idr', $courseColumns, true)) {

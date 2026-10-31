@@ -21,16 +21,25 @@ function save_app_setting(PDO $connection, string $key, string $value): void
 
 function store_qris_upload(array $upload): string
 {
+    return store_private_image($upload, 'payments', 'QRIS');
+}
+
+/**
+ * Simpan gambar PNG/JPG/WebP yang sudah divalidasi ke storage/<folder> dengan
+ * nama acak. Folder storage tidak bisa diakses langsung dari web.
+ */
+function store_private_image(array $upload, string $folder, string $label): string
+{
     if (($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
         throw new InvalidArgumentException(match ($upload['error'] ?? UPLOAD_ERR_NO_FILE) {
-            UPLOAD_ERR_NO_FILE => 'Pilih file QRIS terlebih dahulu.',
-            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'Ukuran gambar QRIS melebihi batas 2 MB.',
-            default => 'Upload QRIS gagal. Silakan coba lagi.',
+            UPLOAD_ERR_NO_FILE => 'Pilih file ' . $label . ' terlebih dahulu.',
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'Ukuran gambar ' . $label . ' melebihi batas 2 MB.',
+            default => 'Upload ' . $label . ' gagal. Silakan coba lagi.',
         });
     }
 
     if (!is_uploaded_file($upload['tmp_name']) || (int) $upload['size'] > 2 * 1024 * 1024) {
-        throw new InvalidArgumentException('File QRIS tidak valid atau melebihi batas 2 MB.');
+        throw new InvalidArgumentException('File ' . $label . ' tidak valid atau melebihi batas 2 MB.');
     }
 
     $image = @getimagesize($upload['tmp_name']);
@@ -43,22 +52,22 @@ function store_qris_upload(array $upload): string
         || $image[0] > 4000
         || $image[1] > 4000
     ) {
-        throw new InvalidArgumentException('File QRIS harus berupa gambar PNG, JPG, atau WebP yang valid (maksimal 4000 × 4000 px).');
+        throw new InvalidArgumentException('File ' . $label . ' harus berupa gambar PNG, JPG, atau WebP yang valid (maksimal 4000 × 4000 px).');
     }
 
-    $directory = dirname(__DIR__) . '/storage/payments';
+    $directory = dirname(__DIR__) . '/storage/' . $folder;
     if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) {
-        throw new RuntimeException('Folder penyimpanan QRIS tidak dapat dibuat.');
+        throw new RuntimeException('Folder penyimpanan ' . $label . ' tidak dapat dibuat.');
     }
 
     $filename = bin2hex(random_bytes(24)) . '.' . $extensions[$mime];
     $destination = $directory . '/' . $filename;
     if (!move_uploaded_file($upload['tmp_name'], $destination)) {
-        throw new RuntimeException('Gambar QRIS tidak dapat disimpan.');
+        throw new RuntimeException('Gambar ' . $label . ' tidak dapat disimpan.');
     }
     if (!chmod($destination, 0600)) {
         unlink($destination);
-        throw new RuntimeException('Izin akses gambar QRIS tidak dapat dibatasi.');
+        throw new RuntimeException('Izin akses gambar ' . $label . ' tidak dapat dibatasi.');
     }
 
     return $filename;

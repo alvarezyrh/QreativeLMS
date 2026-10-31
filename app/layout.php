@@ -19,6 +19,8 @@ function icon(string $name, int $size = 17): string
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
         'people' => '<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6"/>',
         'check' => '<path d="m5 12 4 4L19 6"/>',
+        'folder' => '<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.6a2 2 0 0 1 1.5.7l1.2 1.4a2 2 0 0 0 1.5.7h5.2A2.5 2.5 0 0 1 21 10.3v6.2a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/>',
+        'user' => '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>',
         'award' => '<circle cx="12" cy="8" r="6"/><path d="m8.2 13-1.1 8 4.9-2.5 4.9 2.5-1.1-8"/>',
     ];
     $path = $paths[$name] ?? $paths['grid'];
@@ -43,18 +45,22 @@ function app_navigation(string $role): array
         'admin' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'href' => '/'],
             ['label' => 'Kursus', 'icon' => 'book', 'href' => '/courses.php'],
+            ['label' => 'Modul', 'icon' => 'folder', 'href' => '/modules.php'],
             ['label' => 'Pengguna', 'icon' => 'users', 'href' => '/users.php'],
             ['label' => 'Jadwal', 'icon' => 'calendar', 'href' => '/schedule.php'],
             ['label' => 'Pesan', 'icon' => 'message', 'href' => '/messages.php'],
             ['label' => 'Keuangan', 'icon' => 'wallet', 'href' => '/finance.php'],
             ['label' => 'Laporan', 'icon' => 'chart', 'href' => '/reports.php'],
             ['label' => 'Pengaturan', 'icon' => 'settings', 'href' => '/settings.php'],
+            ['label' => 'Profil saya', 'icon' => 'user', 'href' => '/profile.php'],
         ],
         'guru' => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'href' => '/'],
             ['label' => 'Kelas saya', 'icon' => 'book', 'href' => '/courses.php'],
+            ['label' => 'Modul', 'icon' => 'folder', 'href' => '/modules.php'],
             ['label' => 'Jadwal mengajar', 'icon' => 'calendar', 'href' => '/schedule.php'],
             ['label' => 'Pesan', 'icon' => 'message', 'href' => '/messages.php'],
+            ['label' => 'Profil saya', 'icon' => 'user', 'href' => '/profile.php'],
         ],
         default => [
             ['label' => 'Dashboard', 'icon' => 'grid', 'href' => '/'],
@@ -83,6 +89,19 @@ function unread_message_count(PDO $connection, int $userId): int
     $statement->execute(['user_id' => $userId]);
 
     return (int) $statement->fetchColumn();
+}
+
+/** Foto profil pengguna, atau inisial nama jika belum ada foto. */
+function user_avatar_html(array $account, string $class = 'avatar'): string
+{
+    $avatar = (string) ($account['avatar'] ?? '');
+    if ($avatar !== '') {
+        $url = '/avatar.php?id=' . (int) $account['id'] . '&v=' . substr($avatar, 0, 12);
+
+        return '<div class="' . escape($class) . ' has-photo"><img src="' . escape($url) . '" alt=""></div>';
+    }
+
+    return '<div class="' . escape($class) . '">' . escape(name_initials((string) $account['name'])) . '</div>';
 }
 
 function name_initials(string $name): string

@@ -18,6 +18,9 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+/** Tagline resmi yang dipakai di seluruh LMS. */
+const APP_TAGLINE = 'Speak Confidently, Shine Globally.';
+
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/security.php';
 

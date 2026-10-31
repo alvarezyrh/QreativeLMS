@@ -1,5 +1,7 @@
 # Qreative LMS
 
+> **Speak Confidently, Shine Globally.**
+
 LMS kursus bahasa Inggris dengan PHP native dan SQLite (PDO), tanpa framework
 atau dependensi Composer.
 

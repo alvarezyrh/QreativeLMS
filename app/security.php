@@ -32,7 +32,7 @@ function current_user(PDO $connection): ?array
     }
 
     $statement = $connection->prepare(
-        'SELECT id, name, email, role FROM users WHERE id = :id AND status = :status LIMIT 1'
+        'SELECT id, name, username, email, role, avatar FROM users WHERE id = :id AND status = :status LIMIT 1'
     );
     $statement->execute(['id' => (int) $userId, 'status' => 'active']);
     $user = $statement->fetch();

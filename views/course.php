@@ -4,7 +4,7 @@
     <div class="course-detail-top">
       <div>
         <a class="text-button back-link" href="/courses.php">← Kembali ke kursus</a>
-        <span class="course-level"><?= escape($course['level']) ?> · <?= escape(strtoupper($course['status'])) ?></span>
+        <span class="course-level<?= $course['status'] === 'draft' ? ' is-draft' : '' ?>"><?= escape($course['level']) ?> · <?= $course['status'] === 'draft' ? 'Draft' : 'Terbit' ?></span>
         <h2><?= escape($course['title']) ?></h2>
         <p><?= escape($course['description']) ?></p>
         <div class="manage-meta"><span>Guru: <?= escape($course['teacher_name'] ?? 'Belum ditentukan') ?></span><span><?= count($lessons) ?> materi</span></div>
@@ -47,7 +47,7 @@
             </div>
             <?php if ($isManager): ?>
               <details class="lesson-edit">
-                <summary>Ubah</summary>
+                <summary class="secondary-button">Ubah</summary>
                 <form class="manage-form" method="post" action="/course.php?id=<?= (int) $course['id'] ?>">
                   <input type="hidden" name="csrf_token" value="<?= escape($csrfToken) ?>">
                   <input type="hidden" name="action" value="update_lesson">
@@ -62,7 +62,7 @@
                   <input type="hidden" name="csrf_token" value="<?= escape($csrfToken) ?>">
                   <input type="hidden" name="action" value="delete_lesson">
                   <input type="hidden" name="lesson_id" value="<?= (int) $lesson['id'] ?>">
-                  <button class="link-button danger-link" type="submit">Hapus materi</button>
+                  <button class="secondary-button danger-button" type="submit">Hapus materi</button>
                 </form>
               </details>
             <?php elseif ((int) $lesson['is_completed'] !== 1): ?>

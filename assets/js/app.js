@@ -66,7 +66,7 @@ function applyPageDocument(doc) {
   if (!nextContent) return false;
 
   pageContent.replaceChildren(...Array.from(nextContent.childNodes, node => document.importNode(node, true)));
-  for (const id of ["mainNav", "notificationButton", "crumb"]) {
+  for (const id of ["mainNav", "notificationButton", "crumb", "profileMini"]) {
     const next = doc.getElementById(id);
     const current = document.getElementById(id);
     if (next && current) current.replaceWith(document.importNode(next, true));
@@ -155,8 +155,30 @@ document.addEventListener("submit", event => {
   navigateTo(form.action || location.href, { method, body: new FormData(form) });
 });
 
+// Pratinjau foto profil sebelum disimpan.
+function previewPhoto(input) {
+  const field = input.closest(".photo-field");
+  const file = input.files && input.files[0];
+  if (!field || !file) return;
+  field.querySelector("[data-photo-name]").textContent = file.name;
+  const avatar = field.querySelector(".avatar");
+  const image = document.createElement("img");
+  image.alt = "";
+  image.src = URL.createObjectURL(file);
+  avatar.classList.add("has-photo");
+  avatar.replaceChildren(image);
+}
+
 document.addEventListener("change", event => {
-  if (event.target.id === "kind") updateTransactionFields();
+  const target = event.target;
+  if (target.id === "kind") updateTransactionFields();
+  if (target.matches("[data-photo-input]")) previewPhoto(target);
+  // Tampilkan nama file modul yang dipilih.
+  if (target.matches("[data-file-input]") && target.files[0]) {
+    target.closest(".file-drop").querySelector("[data-file-name]").textContent = target.files[0].name;
+  }
+  // Filter modul langsung diterapkan saat pilihan berubah.
+  if (target.matches("[data-autosubmit]") && target.form) target.form.requestSubmit();
 });
 window.addEventListener("popstate", () => navigateTo(location.href, { push: false }));
 courseSearch.addEventListener("input", event => filterCourses(event.target.value));

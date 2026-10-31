@@ -148,7 +148,7 @@ if ($role === 'murid') {
         'href' => '/course.php?id=' . $row['course_id'],
     ], $activityStatement->fetchAll());
 
-    $subtitle = 'Sedikit demi sedikit, kemampuan bahasa Inggrismu makin berkembang.';
+    $subtitle = APP_TAGLINE;
     $courseTitle = 'Lanjutkan belajarmu';
     $activityTitle = 'Materi terakhir diselesaikan';
     $activityLink = ['/courses.php', 'Lihat kursus'];

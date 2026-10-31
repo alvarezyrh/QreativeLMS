@@ -69,7 +69,7 @@
             ?>
             <article class="manage-course">
               <div class="manage-course-info">
-                <span class="course-level"><?= escape($course['level']) ?> · <?= escape(strtoupper($course['status'])) ?></span>
+                <span class="course-level<?= $course['status'] === 'draft' ? ' is-draft' : '' ?>"><?= escape($course['level']) ?> · <?= $course['status'] === 'draft' ? 'Draft' : 'Terbit' ?></span>
                 <h3><?= escape($course['title']) ?></h3>
                 <p><?= escape($course['description']) ?></p>
                 <div class="manage-meta">
@@ -101,11 +101,11 @@
                 <?php else: ?>
                   <a class="secondary-button" href="/course.php?id=<?= (int) $course['id'] ?>">Materi</a>
                   <a class="secondary-button" href="/courses.php?edit=<?= (int) $course['id'] ?>">Ubah</a>
-                  <form method="post" action="/courses.php" onsubmit="return confirm('Hapus kursus ini beserta materi, pendaftaran, dan progres terkait?')">
+                  <form class="action-form" method="post" action="/courses.php" onsubmit="return confirm('Hapus kursus ini beserta materi, pendaftaran, dan progres terkait?')">
                     <input type="hidden" name="csrf_token" value="<?= escape($csrfToken) ?>">
                     <input type="hidden" name="action" value="delete_course">
                     <input type="hidden" name="course_id" value="<?= (int) $course['id'] ?>">
-                    <button class="link-button danger-link" type="submit">Hapus</button>
+                    <button class="secondary-button danger-button" type="submit">Hapus</button>
                   </form>
                 <?php endif; ?>
               </div>

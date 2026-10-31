@@ -17,6 +17,8 @@ $roleLabel = role_label($user['role']);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f8f4">
+<?php require __DIR__ . '/theme-head.php'; ?>
+  <meta name="description" content="<?= escape(APP_TAGLINE) ?>">
   <title><?= escape($pageTitle) ?> · <?= escape($platformName) ?></title>
   <link rel="stylesheet" href="<?= escape(asset_url('assets/css/app.css')) ?>">
 </head>
@@ -45,10 +47,11 @@ $roleLabel = role_label($user['role']);
             <a class="help-link" href="/messages.php">Buka pesan <span aria-hidden="true">→</span></a>
           </div>
         <?php endif; ?>
-        <div class="profile-mini">
-          <div class="avatar"><?= escape(name_initials($user['name'])) ?></div>
+        <?php $profileTag = in_array($user['role'], ['admin', 'guru'], true) ? 'a' : 'div'; ?>
+        <<?= $profileTag ?> class="profile-mini" id="profileMini"<?= $profileTag === 'a' ? ' href="/profile.php" title="Buka profil saya"' : '' ?>>
+          <?= user_avatar_html($user) ?>
           <div><strong><?= escape($user['name']) ?></strong><span><?= escape($roleLabel) ?> · Akun aktif</span></div>
-        </div>
+        </<?= $profileTag ?>>
       </div>
     </aside>
 
@@ -61,6 +64,7 @@ $roleLabel = role_label($user['role']);
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
             <input id="courseSearch" type="search" placeholder="Cari kursus..." aria-label="Cari kursus">
           </label>
+          <?php require __DIR__ . '/theme-toggle.php'; ?>
           <a class="icon-button" id="notificationButton" href="/messages.php" aria-label="Pesan<?= $unreadCount > 0 ? ' (' . $unreadCount . ' belum dibaca)' : '' ?>">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <?php if ($unreadCount > 0): ?><span class="notification-dot"></span><?php endif; ?>
