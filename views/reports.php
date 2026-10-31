@@ -5,7 +5,7 @@
       <label for="period">Periode laporan</label>
       <input id="period" name="period" type="month" value="<?= escape($period) ?>" required>
       <button class="secondary-button" type="submit">Tampilkan</button>
-      <a class="primary-button" href="/reports.php?period=<?= escape($period) ?>&amp;export=csv">Ekspor CSV</a>
+      <a class="primary-button" href="/reports.php?period=<?= escape($period) ?>&amp;export=csv" download>Ekspor CSV</a>
     </form>
   </section>
 
@@ -63,6 +63,4 @@
       </div>
     <?php endif; ?>
   </section>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

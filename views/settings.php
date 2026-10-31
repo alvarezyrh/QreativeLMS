@@ -30,6 +30,4 @@
       <button class="primary-button" type="submit">Simpan pengaturan <span aria-hidden="true">→</span></button>
     </form>
   </section>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

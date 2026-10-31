@@ -11,8 +11,7 @@
   <main class="auth-shell">
     <section class="auth-card">
       <a class="auth-brand" href="/login.php" aria-label="Qreative LMS">
-        <span class="brand-mark"><img src="/assets/img/qreative-logo.webp" alt="" width="901" height="318"></span>
-        <span class="brand-caption">English, made a little easier</span>
+        <span class="brand-mark"><img src="/assets/img/qreative-logo.webp" alt="Qreative" width="901" height="318"></span>
       </a>
 
       <div class="auth-heading">

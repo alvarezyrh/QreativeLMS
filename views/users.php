@@ -73,6 +73,4 @@
       <p class="table-note">Pengguna dinonaktifkan secara aman agar riwayat kursus dan progres tidak terhapus.</p>
     </section>
   </div>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

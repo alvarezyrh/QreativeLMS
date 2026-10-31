@@ -78,6 +78,4 @@
       <?php endif; ?>
     </div>
   </section>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

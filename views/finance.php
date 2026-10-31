@@ -140,6 +140,4 @@
       </section>
     </div>
   <?php endif; ?>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

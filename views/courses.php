@@ -115,6 +115,4 @@
       <?php endif; ?>
     </section>
   </div>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>

@@ -119,6 +119,4 @@
       <?php endif; ?>
     </section>
   <?php endif; ?>
-</main>
-</body>
-</html>
+<?php require __DIR__ . '/layout-end.php'; ?>
