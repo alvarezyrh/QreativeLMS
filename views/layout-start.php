@@ -18,13 +18,13 @@ $roleLabel = role_label($user['role']);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f8f4">
   <title><?= escape($pageTitle) ?> · <?= escape($platformName) ?></title>
-  <link rel="stylesheet" href="/assets/css/app.css">
+  <link rel="stylesheet" href="<?= escape(asset_url('assets/css/app.css')) ?>">
 </head>
 <body>
   <div class="app">
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="/" aria-label="<?= escape($platformName) ?> — ke dashboard">
-        <span class="brand-mark"><img src="/assets/img/qreative-logo.webp" alt="<?= escape($platformName) ?>" width="901" height="318"></span>
+        <span class="brand-mark"><img src="<?= escape(asset_url('assets/img/qreative-logo.webp')) ?>" alt="<?= escape($platformName) ?>" width="901" height="318"></span>
       </a>
       <div class="side-label">Workspace</div>
       <nav class="nav-list" id="mainNav" aria-label="Menu utama">
@@ -55,7 +55,7 @@ $roleLabel = role_label($user['role']);
     <main class="main">
       <header class="topbar">
         <div class="breadcrumb">Workspace <span aria-hidden="true">/</span> <b id="crumb"><?= escape($pageTitle) ?></b></div>
-        <a class="mobile-brand" href="/" aria-label="<?= escape($platformName) ?> — ke dashboard"><span class="brand-mark"><img src="/assets/img/qreative-logo.webp" alt="<?= escape($platformName) ?>" width="901" height="318"></span></a>
+        <a class="mobile-brand" href="/" aria-label="<?= escape($platformName) ?> — ke dashboard"><span class="brand-mark"><img src="<?= escape(asset_url('assets/img/qreative-logo.webp')) ?>" alt="<?= escape($platformName) ?>" width="901" height="318"></span></a>
         <div class="top-actions">
           <label class="search-wrap" id="searchWrap"<?= $isDashboard ? '' : ' hidden' ?>>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>

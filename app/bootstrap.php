@@ -20,3 +20,19 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/security.php';
+
+/**
+ * URL file statis dengan penanda versi dari isi file, sehingga browser dan
+ * cache hosting/CDN selalu mengambil CSS/JS terbaru setelah deploy.
+ */
+function asset_url(string $path): string
+{
+    static $versions = [];
+    $path = '/' . ltrim($path, '/');
+    if (!array_key_exists($path, $versions)) {
+        $file = dirname(__DIR__) . $path;
+        $versions[$path] = is_file($file) ? (hash_file('crc32b', $file) ?: '') : '';
+    }
+
+    return $versions[$path] === '' ? $path : $path . '?v=' . $versions[$path];
+}

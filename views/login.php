@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f8f4">
   <title>Masuk · <?= escape($platformName) ?></title>
-  <link rel="stylesheet" href="/assets/css/app.css">
+  <link rel="stylesheet" href="<?= escape(asset_url('assets/css/app.css')) ?>">
 </head>
 <body class="auth-page">
   <main class="auth-shell">
     <section class="auth-card">
       <a class="auth-brand" href="/login.php" aria-label="Qreative LMS">
-        <span class="brand-mark"><img src="/assets/img/qreative-logo.webp" alt="Qreative" width="901" height="318"></span>
+        <span class="brand-mark"><img src="<?= escape(asset_url('assets/img/qreative-logo.webp')) ?>" alt="Qreative" width="901" height="318"></span>
       </a>
 
       <div class="auth-heading">
